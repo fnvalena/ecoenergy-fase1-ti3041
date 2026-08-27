@@ -18,9 +18,16 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
 
+from zonas import views as zonas_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # La raíz redirige al listado de zonas, que es la pantalla de inicio del caso EcoEnergy.
     path('', RedirectView.as_view(pattern_name='zonas:listado'), name='inicio'),
     path('zonas/', include('zonas.urls')),
+    # Requerimiento 3: interfaz "Resumen de consumo por zona".
+    # Se registra a nivel raíz (fuera del include de 'zonas/') para que
+    # la ruta final sea exactamente /resumen-zonas/, tal como lo pide
+    # el enunciado (sección 3.1), reutilizando la vista de la app zonas.
+    path('resumen-zonas/', zonas_views.resumen_zonas, name='resumen_zonas'),
 ]

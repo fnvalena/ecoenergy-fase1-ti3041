@@ -21,6 +21,14 @@ from jsonschema.exceptions import ValidationError
 ESTADO_NORMAL = "NORMAL"
 ESTADO_ALERTA = "ALERTA"
 
+# Textos de estado exigidos por la regla de negocio del Resumen por zona
+# (Requerimiento 3, sección 3.3). Se mantienen separados de ESTADO_NORMAL/
+# ESTADO_ALERTA porque el enunciado exige literalmente estos textos para
+# esta interfaz, aunque la comparación (consumo_total vs limite_kwh) sea
+# la misma regla que ya usa calcular_estado().
+ESTADO_DENTRO_LIMITE = "DENTRO DEL LÍMITE"
+ESTADO_LIMITE_SUPERADO = "LÍMITE SUPERADO"
+
 # Esquemas mínimos (claves obligatorias y tipos) exigidos en la sección 4.2
 # del enunciado. jsonschema se usa para descartar registros mal formados
 # sin detener la aplicación (refuerza CA-02/CA-06: procesar colecciones
@@ -204,4 +212,61 @@ def obtener_detalle_zona(zona_id):
         "cantidad_dispositivos": len(dispositivos_con_categoria),
         "consumo_total": consumo_total,
         "estado": estado,
+    }
+
+
+def resumen_por_zona():
+    """
+    Arma la agregación completa del Requerimiento 3 ("Resumen de
+    consumo por zona"). Para cada zona construye un registro con id,
+    nombre, cantidad de dispositivos, consumo total (suma de
+    consumo_kwh de sus dispositivos), límite y estado según la regla
+    3.3.
+
+    Una zona sin dispositivos asociados igual se incluye en el
+    resultado, con cantidad 0, consumo total 0 y estado
+    "DENTRO DEL LÍMITE" (0 <= limite_kwh siempre que el límite no sea
+    negativo).
+
+    También calcula los tres totales generales para las tarjetas
+    superiores de la interfaz: cantidad de zonas, cantidad de
+    dispositivos y consumo total de todos los dispositivos.
+
+    Toda la lógica de conteo, suma y clasificación vive acá; la vista
+    solo llama a esta función y arma el contexto, y el template solo
+    presenta los valores ya calculados (separación MVT del 3.4).
+    """
+    zonas = obtener_zonas()
+    dispositivos = obtener_dispositivos()
+
+    resumen_zonas = []
+    for zona in zonas:
+        dispositivos_zona = [
+            dispositivo for dispositivo in dispositivos
+            if dispositivo.get("zona_id") == zona["id"]
+        ]
+        consumo_total = sum(d["consumo_kwh"] for d in dispositivos_zona)
+        limite_kwh = zona["limite_kwh"]
+        estado = (
+            ESTADO_DENTRO_LIMITE if consumo_total <= limite_kwh
+            else ESTADO_LIMITE_SUPERADO
+        )
+        resumen_zonas.append({
+            "id": zona["id"],
+            "nombre": zona["nombre"],
+            "cantidad_dispositivos": len(dispositivos_zona),
+            "consumo_total": consumo_total,
+            "limite_kwh": limite_kwh,
+            "estado": estado,
+        })
+
+    totales = {
+        "cantidad_zonas": len(zonas),
+        "cantidad_dispositivos": len(dispositivos),
+        "consumo_total": sum(d["consumo_kwh"] for d in dispositivos),
+    }
+
+    return {
+        "zonas": resumen_zonas,
+        "totales": totales,
     }

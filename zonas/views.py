@@ -38,3 +38,17 @@ def detalle_zona(request, zona_id):
         )
 
     return render(request, "zonas/detalle_zona.html", detalle)
+
+
+def resumen_zonas(request):
+    """
+    Vista "Resumen de consumo por zona" (Requerimiento 3).
+
+    Delega toda la agregación (conteos, sumas y la clasificación
+    DENTRO DEL LÍMITE / LÍMITE SUPERADO) en data_access.resumen_por_zona(),
+    y solo arma el contexto que el template va a presentar. El template
+    no contiene lógica de agregación: recibe listas y totales ya
+    calculados.
+    """
+    contexto = data_access.resumen_por_zona()
+    return render(request, "zonas/resumen_zonas.html", contexto)

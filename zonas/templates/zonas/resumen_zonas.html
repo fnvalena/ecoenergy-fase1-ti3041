@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block titulo %}Resumen por zona · EcoEnergy{% endblock %}
+
+{% block contenido %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'zonas:listado' %}">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Resumen por zona</li>
+        </ol>
+    </nav>
+
+    <h1 class="h3 mb-4">Resumen de consumo por zona</h1>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Zonas</p>
+                    <p class="h5 mb-0">{{ totales.cantidad_zonas }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Dispositivos</p>
+                    <p class="h5 mb-0">{{ totales.cantidad_dispositivos }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Consumo total</p>
+                    <p class="h5 mb-0">{{ totales.consumo_total }} kWh</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if zonas %}
+        <div class="table-responsive tabla-scroll border rounded">
+            <table class="table table-striped table-hover mb-0 align-middle">
+                <thead class="table-dark sticky-top">
+                    <tr>
+                        <th scope="col">Zona</th>
+                        <th scope="col" class="text-end">Dispositivos</th>
+                        <th scope="col" class="text-end">Consumo total</th>
+                        <th scope="col" class="text-end">Límite</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for zona in zonas %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'zonas:detalle' zona.id %}">{{ zona.nombre }}</a>
+                            </td>
+                            <td class="text-end">{{ zona.cantidad_dispositivos }}</td>
+                            <td class="text-end">{{ zona.consumo_total }} kWh</td>
+                            <td class="text-end">{{ zona.limite_kwh }} kWh</td>
+                            <td>
+                                {% if zona.estado == "LÍMITE SUPERADO" %}
+                                    <span class="badge bg-danger badge-estado">
+                                        &#9888; {{ zona.estado }}
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-success badge-estado">
+                                        &#10003; {{ zona.estado }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-secondary" role="alert">
+            No hay zonas disponibles.
+        </div>
+    {% endif %}
+{% endblock %}
