@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ zona.nombre }} · EcoEnergy{% endblock %}
+
+{% block contenido %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'zonas:listado' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'zonas:listado' %}">Zonas</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ zona.nombre }}</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-start flex-wrap mb-4">
+        <h1 class="h3">Detalle de zona: {{ zona.nombre }}</h1>
+        <a href="{% url 'zonas:listado' %}" class="btn btn-outline-secondary btn-sm">
+            &larr; Volver al listado
+        </a>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Límite</p>
+                    <p class="h5 mb-0">{{ zona.limite_kwh }} kWh</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Consumo total</p>
+                    <p class="h5 mb-0">{{ consumo_total }} kWh</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Dispositivos</p>
+                    <p class="h5 mb-0">{{ cantidad_dispositivos }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <p class="text-muted small mb-1">Estado</p>
+                    {% if estado == "ALERTA" %}
+                        <span class="badge bg-danger badge-estado">
+                            &#9888; ALERTA
+                        </span>
+                    {% else %}
+                        <span class="badge bg-success badge-estado">
+                            &#10003; NORMAL
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if dispositivos %}
+        <div class="table-responsive tabla-scroll border rounded">
+            <table class="table table-striped table-hover mb-0 align-middle">
+                <thead class="table-dark sticky-top">
+                    <tr>
+                        <th scope="col">Dispositivo</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col" class="text-end">Consumo kWh</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dispositivo in dispositivos %}
+                        <tr>
+                            <td>{{ dispositivo.nombre }}</td>
+                            <td>{{ dispositivo.categoria_nombre }}</td>
+                            <td class="text-end">{{ dispositivo.consumo_kwh }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Esta zona no tiene dispositivos.
+        </div>
+    {% endif %}
+{% endblock %}
