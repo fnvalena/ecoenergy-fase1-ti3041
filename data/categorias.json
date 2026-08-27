@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "nombre": "Climatización",
+        "descripcion": "Equipos de calefacción, ventilación y aire acondicionado."
+    },
+    {
+        "id": 2,
+        "nombre": "Iluminación",
+        "descripcion": "Sistemas y dispositivos de iluminación general."
+    },
+    {
+        "id": 3,
+        "nombre": "Maquinaria",
+        "descripcion": "Equipos y maquinaria de uso productivo o de oficina."
+    }
+]

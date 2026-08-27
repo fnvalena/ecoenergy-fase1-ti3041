@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "nombre": "Aire acondicionado A1",
+        "consumo_kwh": 200.0,
+        "zona_id": 1,
+        "categoria_id": 1
+    },
+    {
+        "id": 2,
+        "nombre": "Ventilador industrial V2",
+        "consumo_kwh": 150.0,
+        "zona_id": 1,
+        "categoria_id": 1
+    },
+    {
+        "id": 3,
+        "nombre": "Panel LED bodega",
+        "consumo_kwh": 100.0,
+        "zona_id": 1,
+        "categoria_id": 2
+    },
+    {
+        "id": 4,
+        "nombre": "Calefactor oficina",
+        "consumo_kwh": 180.0,
+        "zona_id": 2,
+        "categoria_id": 1
+    },
+    {
+        "id": 5,
+        "nombre": "Notebook y monitores",
+        "consumo_kwh": 200.0,
+        "zona_id": 2,
+        "categoria_id": 3
+    },
+    {
+        "id": 6,
+        "nombre": "Torno CNC",
+        "consumo_kwh": 300.0,
+        "zona_id": 3,
+        "categoria_id": 3
+    },
+    {
+        "id": 7,
+        "nombre": "Compresor industrial",
+        "consumo_kwh": 250.0,
+        "zona_id": 3,
+        "categoria_id": 3
+    },
+    {
+        "id": 8,
+        "nombre": "Iluminación planta",
+        "consumo_kwh": 200.0,
+        "zona_id": 3,
+        "categoria_id": 2
+    }
+]

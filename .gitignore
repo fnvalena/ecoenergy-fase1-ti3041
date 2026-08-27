@@ -1,0 +1,34 @@
+# Entorno virtual
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.log
+local_settings.py
+
+# Variables de entorno / credenciales
+.env
+*.env
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Carpetas propias del entorno de trabajo (no del proyecto)
+.cache/
+.config/
+.local/
+.npm/
+.npm-global/
+.npmrc
+.wget-hsts

@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "nombre": "Bodega Norte",
+        "limite_kwh": 500.0
+    },
+    {
+        "id": 2,
+        "nombre": "Oficinas Administrativas",
+        "limite_kwh": 300.0
+    },
+    {
+        "id": 3,
+        "nombre": "Planta de Producción",
+        "limite_kwh": 800.0
+    },
+    {
+        "id": 4,
+        "nombre": "Sala de Servidores",
+        "limite_kwh": 200.0
+    }
+]
